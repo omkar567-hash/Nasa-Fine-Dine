@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NIGHTFALL RACING</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Shared SVG art (original generic sports-car silhouette, no real brands) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3350"/>
+      <stop offset="0.45" stop-color="#17141f"/>
+      <stop offset="1" stop-color="#07060a"/>
+    </linearGradient>
+    <linearGradient id="bodyGradRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b2a7a"/>
+      <stop offset="0.5" stop-color="#241033"/>
+      <stop offset="1" stop-color="#0a0510"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a6bff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#0b0614" stop-opacity=".95"/>
+    </linearGradient>
+    <radialGradient id="lightGlow">
+      <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="0.3" stop-color="#d9c2ff" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#8b3dff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="tailGlow">
+      <stop offset="0" stop-color="#ff4d6d" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ff1f4b" stop-opacity="0"/>
+    </radialGradient>
+
+    <symbol id="car" viewBox="0 0 400 130">
+      <!-- shadow -->
+      <ellipse cx="200" cy="118" rx="190" ry="8" fill="#000" opacity=".6"/>
+      <!-- body -->
+      <path d="M8 92 C8 82 28 78 58 74 L108 58 C130 44 172 36 216 36 C256 36 286 46 306 59 L346 67 C376 71 394 77 394 90 L394 100 L8 100 Z" fill="url(#bodyGrad)" stroke="#8b3dff" stroke-opacity=".55" stroke-width="1.2"/>
+      <!-- roof highlight -->
+      <path d="M118 58 C140 46 176 39 216 39 C250 39 276 47 296 59" fill="none" stroke="#c6a6ff" stroke-opacity=".5" stroke-width="1.5"/>
+      <!-- glass -->
+      <path d="M126 60 C146 49 178 43 214 43 C244 43 266 49 284 60 Z" fill="url(#glassGrad)"/>
+      <path d="M205 43 L205 60" stroke="#000" stroke-opacity=".6" stroke-width="2"/>
+      <!-- side line + intake -->
+      <path d="M62 82 L340 82" stroke="#8b3dff" stroke-opacity=".6" stroke-width="1.4"/>
+      <path d="M232 70 L262 70 L252 78 L228 78 Z" fill="#000" opacity=".7"/>
+      <!-- underglow -->
+      <rect x="40" y="99" width="320" height="3" rx="1.5" fill="#9b4dff" opacity=".9"/>
+      <!-- lights -->
+      <path d="M368 71 L392 79 L372 80 Z" fill="#fff"/>
+      <circle cx="384" cy="78" r="16" fill="url(#lightGlow)"/>
+      <path d="M10 86 L34 80 L34 85 L12 90 Z" fill="#ff2d55"/>
+      <circle cx="16" cy="86" r="12" fill="url(#tailGlow)"/>
+      <!-- wheels -->
+      <g>
+        <circle cx="96" cy="100" r="21" fill="#050507" stroke="#2a2438" stroke-width="2"/>
+        <circle cx="96" cy="100" r="12" fill="#14101c" stroke="#8b3dff" stroke-width="1.5"/>
+        <circle cx="96" cy="100" r="3" fill="#bfa0ff"/>
+        <circle cx="304" cy="100" r="21" fill="#050507" stroke="#2a2438" stroke-width="2"/>
+        <circle cx="304" cy="100" r="12" fill="#14101c" stroke="#8b3dff" stroke-width="1.5"/>
+        <circle cx="304" cy="100" r="3" fill="#bfa0ff"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+<div class="scanlines"></div>
+
+<!-- ============ MAIN MENU ============ -->
+<main id="main-menu" class="screen active" aria-label="Main menu">
+  <div class="menu-left">
+    <div class="eyebrow">Underground Street Racing</div>
+    <h1 class="logo"><span>NIGHTFALL</span><span class="logo-accent">RACING</span></h1>
+    <p class="tagline">Own the Streets. Rule the Night.</p>
+
+    <nav class="menu-buttons" aria-label="Main navigation">
+      <button class="btn btn-primary" data-action="play"><i></i>PLAY</button>
+      <button class="btn btn-featured" data-action="street"><i></i>STREET RACING<em>Select mode</em></button>
+      <button class="btn" data-action="garage"><i></i>GARAGE<em>Soon</em></button>
+      <button class="btn" data-action="settings"><i></i>SETTINGS</button>
+      <button class="btn btn-ghost" data-action="exit"><i></i>EXIT</button>
+    </nav>
+  </div>
+
+  <div class="menu-hero" aria-hidden="true">
+    <div class="hero-glow"></div>
+    <svg class="hero-car" viewBox="0 0 400 130"><use href="#car"/></svg>
+    <div class="hero-floor"></div>
+  </div>
+
+  <footer class="version">v0.1 prototype &middot; Menu build</footer>
+</main>
+
+<!-- ============ STREET RACING PANEL ============ -->
+<section id="street-panel" class="screen" aria-label="Street racing selection">
+  <header class="panel-header">
+    <button class="btn btn-back" data-action="back" aria-label="Back to main menu"><i></i>&#8592; BACK</button>
+    <div class="panel-title">
+      <span class="eyebrow">Choose your discipline</span>
+      <h2>STREET <b>RACING</b></h2>
+    </div>
+    <div class="panel-spacer"></div>
+  </header>
+
+  <div class="cards">
+    <!-- MODE 1 -->
+    <article class="card card-underground" tabindex="0" role="button" data-mode="UNDERGROUND + HIGHWAY">
+      <div class="card-art">
+        <div class="tunnel">
+          <span class="tl t1"></span><span class="tl t2"></span><span class="tl t3"></span><span class="tl t4"></span>
+          <div class="highway-glow"></div>
+          <div class="road-lines"></div>
+        </div>
+        <svg class="card-car" viewBox="0 0 400 130"><use href="#car"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-num">01</span>
+        <h3>UNDERGROUND + HIGHWAY</h3>
+        <p>Race through underground city streets and high-speed highways.</p>
+        <span class="card-cta">SELECT <i>&#9654;</i></span>
+      </div>
+    </article>
+
+    <!-- MODE 2 -->
+    <article class="card card-drift" tabindex="0" role="button" data-mode="DRIFT CHALLENGE">
+      <div class="card-art">
+        <div class="drift-floor"></div>
+        <div class="smoke s1"></div><div class="smoke s2"></div><div class="smoke s3"></div><div class="smoke s4"></div>
+        <svg class="card-car drift-car" viewBox="0 0 400 130"><use href="#car"/></svg>
+        <div class="sparks"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-num">02</span>
+        <h3>DRIFT CHALLENGE</h3>
+        <p>Master high-speed drifting and earn drift scores.</p>
+        <span class="card-cta">SELECT <i>&#9654;</i></span>
+      </div>
+    </article>
+
+    <!-- MODE 3 -->
+    <article class="card card-drag" tabindex="0" role="button" data-mode="DRAG RACING">
+      <div class="card-art">
+        <div class="tree">
+          <span></span><span></span><span></span><span class="g"></span>
+        </div>
+        <div class="start-line"></div>
+        <svg class="card-car drag-a" viewBox="0 0 400 130"><use href="#car"/></svg>
+        <svg class="card-car drag-b" viewBox="0 0 400 130"><use href="#car"/></svg>
+      </div>
+      <div class="card-body">
+        <span class="card-num">03</span>
+        <h3>DRAG RACING</h3>
+        <p>Experience intense straight-line acceleration competitions.</p>
+        <span class="card-cta">SELECT <i>&#9654;</i></span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<div id="settings" class="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-label="Settings">
+    <h3>SETTINGS</h3>
+    <label class="row">
+      <span>Graphics quality<small id="gfx-note"></small></span>
+      <select id="gfx-select">
+        <option value="auto">Auto</option>
+        <option value="high">High</option>
+        <option value="low">Low (lightweight)</option>
+      </select>
+    </label>
+    <label class="row">
+      <span>Reduce motion<small>Disables card animations</small></span>
+      <input type="checkbox" id="motion-toggle">
+    </label>
+    <button class="btn btn-primary" data-action="close-settings"><i></i>DONE</button>
+  </div>
+</div>
+
+<!-- ============ EXIT ============ -->
+<div id="exit-screen" class="modal" hidden>
+  <div class="modal-box">
+    <h3>THANKS FOR RACING</h3>
+    <p>The browser doesn't allow pages to close themselves. You can close this tab, or return to the menu.</p>
+    <button class="btn btn-primary" data-action="close-exit"><i></i>RETURN TO MENU</button>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/background.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
